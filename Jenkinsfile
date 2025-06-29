@@ -1,22 +1,15 @@
-// Piper Pipeline
 @Library('piper-lib-os') _
+node {
+  stage('SCM') {
+    checkout scm
+  }
 
-pipeline {
-  agent any
+  stage('Read Config') {
+    def config = readYaml file: 'config.yml'
+    echo "Parsed Config: ${config}"
+  }
 
-  stages {
-    stage('SCM') {
-      steps {
-        checkout scm
-      }
-    }
-
-    stage('Fiori-CICD') {
-      steps {
-        script {
-          fioriOnCloudPlatformPipeline script: this
-        }
-      }
-    }
+  stage('Fiori-CICD') {
+    fioriOnCloudPlatformPipeline script: this
   }
 }

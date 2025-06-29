@@ -1,22 +1,19 @@
 general:
-  buildTool: "npm"
+  buildTool: "mta"
+  verbose: true
 
 steps:
-  npmExecuteScripts:
-    runScripts: ["build"]
-
   mtaBuild:
-    buildTarget: "CF"
-    extensions: []
+    platform: "CF"
+    artifactPrepareVersion:
+      versioningType: "cloud_noTag"
 
   cloudFoundryDeploy:
-    deployTool: "cf_native"
-    mtaPath: "mta_archives"
-    deployCommand: "deploy"
-    deployOptions: "-f"
-
-cloudFoundry:
-  apiEndpoint: "https://api.cf.us10-001.hana.ondemand.com"
-  org: "Next-Wave-Free-Tier"
-  space: "dev"
-  credentialsId: "cf-credentials"  # Jenkins credentials ID
+    deployTool: "mtaDeployPlugin"
+    deployType: "standard"
+    cloudFoundry:
+      apiEndpoint: "https://api.cf.us10-001.hana.ondemand.com"
+      org: "Next-Wave-Free-Tier"
+      space: "dev"
+      credentialsId: "cf-credentials"
+    verbose: true

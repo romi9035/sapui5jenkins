@@ -1,10 +1,22 @@
 // Piper Pipeline
 @Library('piper-lib-os') _
 
-  stage('SCM') {
-    checkout scm
-  }
+pipeline {
+  agent any
 
-  stage('Fiori-CICD')   {
-     fioriOnCloudPlatformPipeline script:this
+  stages {
+    stage('SCM') {
+      steps {
+        checkout scm
+      }
+    }
+
+    stage('Fiori-CICD') {
+      steps {
+        script {
+          fioriOnCloudPlatformPipeline script: this
+        }
+      }
+    }
   }
+}

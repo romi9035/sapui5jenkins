@@ -1,0 +1,22 @@
+general:
+  buildTool: "npm"
+
+steps:
+  npmExecuteScripts:
+    runScripts: ["build"]
+
+  mtaBuild:
+    buildTarget: "CF"
+    extensions: []
+
+  cloudFoundryDeploy:
+    deployTool: "cf_native"
+    mtaPath: "mta_archives"
+    deployCommand: "deploy"
+    deployOptions: "-f"
+
+cloudFoundry:
+  apiEndpoint: "https://api.cf.us10-001.hana.ondemand.com"
+  org: "Next-Wave-Free-Tier"
+  space: "dev"
+  credentialsId: "cf-credentials"  # Jenkins credentials ID

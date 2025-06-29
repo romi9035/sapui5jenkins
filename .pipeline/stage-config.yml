@@ -1,3 +1,6 @@
+general:
+  stageConfigResource: 'not-used'  # Dummy value to satisfy Piper's mandatory check
+
 stages:
   Checkout:
     steps: []  # Git checkout is done inline, no Piper step

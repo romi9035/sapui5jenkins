@@ -1,13 +1,23 @@
 stages:
-  Init:
+  Checkout:
+    steps: []  # Git checkout is done inline, no Piper step
+
+  Test readYaml:
+    steps: []  # Custom script step, not a Piper step
+
+  Init Piper:
     steps:
+      - piperInitRunStageConfiguration
       - setupCommonPipelineEnvironment
+
   NPM Build:
     steps:
       - npmExecuteScripts
+
   MTA Build:
     steps:
       - mtaBuild
+
   Deploy to Cloud Foundry:
     steps:
       - cloudFoundryDeploy

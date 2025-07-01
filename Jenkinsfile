@@ -1,4 +1,4 @@
-@Library('piper-lib-os') _
+@Library('piper-lib-os@v1.446.0') _
 
 node() {
     stage('Prepare') {
@@ -13,7 +13,11 @@ node() {
         bat 'dir .pipeline'
         bat 'type .pipeline\\config.yml'
 
-        setupCommonPipelineEnvironment script: this, customDefaults: ['file:.pipeline/config.yml']
+        // 💡 Use this to avoid path issues
+        setupCommonPipelineEnvironment(
+            script: this,
+            customDefaultsFromFiles: ['.pipeline/config.yml']
+        )
     }
 
     stage('Build') {

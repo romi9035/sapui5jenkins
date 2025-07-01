@@ -1,30 +1,51 @@
 @Library('piper-lib-os@v1.446.0') _
 
-node() {
-    stage('Prepare') {
-        checkout([
-            $class: 'GitSCM',
-            branches: [[name: '*/main']],
-            userRemoteConfigs: [[url: 'https://github.com/romi9035/sapui5jenkins.git']],
-            extensions: [[$class: 'CloneOption', noTags: false, shallow: false, depth: 0]]
-        ])
+pipeline {
+    agent any
 
-        bat 'dir'
-        bat 'dir .pipeline'
-        bat 'type .pipeline\\config.yml'
-
-        // 💡 Use this to avoid path issues
-        setupCommonPipelineEnvironment(
-            script: this,
-            customDefaultsFromFiles: ['.pipeline/config.yml']
-        )
+    environment {
+        PIPELINE_CONFIG_FILE = '.pipeline/config.yml'
     }
 
-    stage('Build') {
-        mtaBuild script: this
+    stages {
+
+        stage('Load Configuration') {
+            steps {
+                script {
+                    // Load pipeline config file
+                    pipelineEnv = loadPipelineEnvironment()
+                    config = loadEffectivePipelineConfiguration()
+                }
+            }
+        }
+
+        stage('MTA Build') {
+            steps {
+                script {
+                    mtaBuild script: this
+                }
+            }
+        }
+
+        stage('Cloud Foundry Deploy') {
+            steps {
+                script {
+                    cloudFoundryDeploy script: this
+                }
+            }
+        }
     }
 
-    stage('Deploy') {
-        cloudFoundryDeploy script: this
+    post {
+        always {
+            echo "Cleaning up workspace..."
+            cleanWs()
+        }
+
+        failure {
+            script {
+                debugReport script: this
+            }
+        }
     }
 }

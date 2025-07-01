@@ -1,6 +1,10 @@
+general:
+  productiveBranch: 'main'
+
 steps:
   mtaBuild:
     platform: "CF"
+
   cloudFoundryDeploy:
     cloudFoundry:
       apiEndpoint: "https://api.cf.us10-001.hana.ondemand.com"

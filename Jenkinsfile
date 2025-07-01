@@ -1,53 +1,54 @@
-@Library('piper-lib-os') _
-
 pipeline {
-     agent {
-        docker {
-            image 'ppiper/cf-cli'  // Has cf-cli, mbt, sh
-            args '-u root'         // Optional, for permissions
-        }
-    }
+    agent any
 
     environment {
-        PIPELINE_CONFIG_FILE = '.pipeline/config.yml'
+        CF_API      = 'https://api.cf.us10-001.hana.ondemand.com'
+        CF_ORG      = 'Next-Wave-Free-Tier'
+        CF_SPACE    = 'dev'
+        CF_USER     = credentials('cf-username') // Jenkins credential ID
+        CF_PASSWORD = credentials('cf-password') // Jenkins credential ID
     }
 
     stages {
-
-
-        stage('Setup Environment') {
+        stage('Checkout') {
             steps {
-                script {
-                    setupCommonPipelineEnvironment script: this
-                }
+                checkout scm
             }
         }
 
         stage('MTA Build') {
             steps {
-                script {
-                    mtaBuild script: this
-                }
+                bat 'mbt build -p=cf'
             }
         }
 
-        stage('Cloud Foundry Deploy') {
+        stage('CF Login') {
             steps {
-                script {
-                    cloudFoundryDeploy script: this
-                }
+                bat """
+                    cf logout
+                    cf login -a %CF_API% -u %CF_USER% -p %CF_PASSWORD% -o %CF_ORG% -s %CF_SPACE%
+                """
+            }
+        }
+
+        stage('CF Deploy') {
+            steps {
+                bat 'cf deploy mta_archives\\*.mtar -f'
             }
         }
     }
 
     post {
         always {
-            echo 'Cleaning up workspace...'
             cleanWs()
         }
 
         failure {
-            echo 'Pipeline failed. Check build logs and config.yml for details.'
+            echo '❌ Pipeline failed. Check the logs for errors.'
+        }
+
+        success {
+            echo '✅ Application deployed to Cloud Foundry successfully!'
         }
     }
 }

@@ -9,11 +9,10 @@ pipeline {
 
     stages {
 
-        stage('Load Configuration') {
+        stage('Setup Environment') {
             steps {
                 script {
-                    pipelineEnv = loadPipelineEnvironment()
-                    config = loadEffectivePipelineConfiguration()
+                    setupCommonPipelineEnvironment script: this
                 }
             }
         }

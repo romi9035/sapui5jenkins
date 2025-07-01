@@ -3,6 +3,7 @@ node() {
     stage('prepare') {
         checkout scm
         setupCommonPipelineEnvironment script:this
+        loadPipelineConfiguration script: this
     }
     stage('build') {
       mtaBuild script: this

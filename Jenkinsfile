@@ -1,7 +1,12 @@
 @Library('piper-lib-os') _
 
 pipeline {
-    agent any
+     agent {
+        docker {
+            image 'ppiper/cf-cli'  // Has cf-cli, mbt, sh
+            args '-u root'         // Optional, for permissions
+        }
+    }
 
     environment {
         PIPELINE_CONFIG_FILE = '.pipeline/config.yml'

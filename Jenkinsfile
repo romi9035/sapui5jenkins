@@ -12,7 +12,6 @@ pipeline {
         stage('Load Configuration') {
             steps {
                 script {
-                    // Load pipeline config file
                     pipelineEnv = loadPipelineEnvironment()
                     config = loadEffectivePipelineConfiguration()
                 }
@@ -43,9 +42,7 @@ pipeline {
         }
 
         failure {
-            script {
-                debugReport script: this
-            }
+            echo "Pipeline failed. Check build logs and config.yml for details."
         }
     }
 }

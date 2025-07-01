@@ -9,6 +9,15 @@ pipeline {
 
     stages {
 
+        stage('Check Config') {
+            steps {
+                script {
+                    bat 'dir /S /B'
+                    bat 'type .pipeline\\config.yml || echo config.yml not found'
+                }
+            }
+        }
+
         stage('Setup Environment') {
             steps {
                 script {
@@ -36,12 +45,12 @@ pipeline {
 
     post {
         always {
-            echo "Cleaning up workspace..."
+            echo 'Cleaning up workspace...'
             cleanWs()
         }
 
         failure {
-            echo "Pipeline failed. Check build logs and config.yml for details."
+            echo 'Pipeline failed. Check build logs and config.yml for details.'
         }
     }
 }

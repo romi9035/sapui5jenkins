@@ -9,14 +9,6 @@ pipeline {
 
     stages {
 
-        stage('Check Config') {
-            steps {
-                script {
-                    bat 'dir /S /B'
-                    bat 'type .pipeline\\config.yml || echo config.yml not found'
-                }
-            }
-        }
 
         stage('Setup Environment') {
             steps {

@@ -5,8 +5,8 @@ pipeline {
         CF_API      = 'https://api.cf.us10-001.hana.ondemand.com'
         CF_ORG      = 'Next-Wave-Free-Tier'
         CF_SPACE    = 'dev'
-        CF_USER     = credentials('cf-username') // Jenkins credential ID
-        CF_PASSWORD = credentials('cf-password') // Jenkins credential ID
+        CF_USER     = 'romil.agrawal@nextwavesap.com' // Jenkins credential ID
+        CF_PASSWORD = credentials('cf-credentials') // Jenkins credential ID
     }
 
     stages {

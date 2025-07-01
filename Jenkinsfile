@@ -2,19 +2,18 @@
 
 node() {
     stage('Prepare') {
-        // Force full checkout to ensure .pipeline/config.yml is available
         checkout([
             $class: 'GitSCM',
             branches: [[name: '*/main']],
             userRemoteConfigs: [[url: 'https://github.com/romi9035/sapui5jenkins.git']],
-            extensions: [[$class: 'CloneOption', noTags: false, shallow: false]]
+            extensions: [[$class: 'CloneOption', noTags: false, shallow: false, depth: 0]]
         ])
 
-        // Windows version of the file checks
+        bat 'dir'
         bat 'dir .pipeline'
         bat 'type .pipeline\\config.yml'
 
-        setupCommonPipelineEnvironment script: this
+        setupCommonPipelineEnvironment script: this, customDefaults: ['file:.pipeline/config.yml']
     }
 
     stage('Build') {

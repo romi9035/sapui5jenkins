@@ -1,24 +1,27 @@
 @Library('piper-lib-os') _
 
-node {
+node() {
     stage('Prepare') {
-        checkout scm
+        // Force full checkout to ensure .pipeline/config.yml is available
+        checkout([
+            $class: 'GitSCM',
+            branches: [[name: '*/main']],
+            userRemoteConfigs: [[url: 'https://github.com/romi9035/sapui5jenkins.git']],
+            extensions: [[$class: 'CloneOption', noTags: false, shallow: false]]
+        ])
 
-        echo "=====> Running setupCommonPipelineEnvironment"
+        // Windows version of the file checks
+        bat 'dir .pipeline'
+        bat 'type .pipeline\\config.yml'
+
         setupCommonPipelineEnvironment script: this
-
-        echo "=====> Trying to read config manually"
-        def config = readYaml file: '.pipeline/config.yml'
-        echo "=====> config.yml content: ${config}"
-
-        echo "=====> Setup complete"
     }
 
-    stage('Build MTA') {
+    stage('Build') {
         mtaBuild script: this
     }
 
-    stage('Deploy to CF') {
+    stage('Deploy') {
         cloudFoundryDeploy script: this
     }
 }

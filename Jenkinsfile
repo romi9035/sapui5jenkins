@@ -6,7 +6,8 @@ pipeline {
         CF_ORG      = 'Next-Wave-Free-Tier'
         CF_SPACE    = 'dev'
         CF_USER     = 'romil.agrawal@nextwavesap.com' // Jenkins credential ID
-        CF_PASSWORD = credentials('cf-credentials') // Jenkins credential ID
+        CF_USER     = credentials('cf-username') // Use Jenkins credentials for security
+        CF_PASSWORD = credentials('cf-password') // Jenkins credential ID
     }
 
     stages {

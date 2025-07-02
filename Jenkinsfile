@@ -5,17 +5,18 @@ pipeline {
         CF_API      = 'https://api.cf.us10-001.hana.ondemand.com'
         CF_ORG      = 'Next-Wave-Free-Tier'
         CF_SPACE    = 'dev'
-        CF_USER     = credentials('cf-username') // Use Jenkins credentials for security
-        CF_PASSWORD = credentials('cf-password') // Jenkins credential ID
+        CF_USER     = credentials('cf-username')     // Use Jenkins credentials for security
+        CF_PASSWORD = credentials('cf-password')     // Jenkins credential ID
     }
 
-    stage('Checkout') {
-        steps {
-            cleanWs()
-            checkout scm
+    stages {
+        stage('Checkout') {
+            steps {
+                cleanWs()
+                checkout scm
+                bat 'dir' // For debugging: list workspace files
             }
-    }
-
+        }
 
         stage('MTA Build') {
             steps {

@@ -9,12 +9,13 @@ pipeline {
         CF_PASSWORD = credentials('cf-password') // Jenkins credential ID
     }
 
-    stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
+    stage('Checkout') {
+        steps {
+            cleanWs()
+            checkout scm
             }
-        }
+    }
+
 
         stage('MTA Build') {
             steps {

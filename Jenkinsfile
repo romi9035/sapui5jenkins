@@ -5,10 +5,10 @@ pipeline {
         CF_API      = 'https://api.cf.us10-001.hana.ondemand.com'
         CF_ORG      = 'Next-Wave-Free-Tier'
         CF_SPACE    = 'dev'
-        CF_USER     = credentials('cf-username')     // Jenkins credential ID for CF username
-        CF_PASSWORD = credentials('cf-password')     // Jenkins credential ID for CF password
-        MBT_PATH    = 'C:\\Users\\romagraw\\AppData\\Roaming\\npm'  // NOTE: parent folder of mbt.exe
-        CF_PATH     = 'C:\\Program Files\\Cloud Foundry'            // NOTE: parent folder of cf.exe
+        CF_USER     = credentials('cf-username')
+        CF_PASSWORD = credentials('cf-password')
+
+        PATH = "C:\\Users\\romagraw\\AppData\\Roaming\\npm;C:\\Program Files\\Cloud Foundry;${env.PATH}"
     }
 
     stages {
@@ -16,37 +16,34 @@ pipeline {
             steps {
                 cleanWs()
                 checkout scm
-                bat 'dir' // Debug: list files
+                bat 'dir'
             }
         }
 
         stage('MTA Build') {
             steps {
-                bat '''
-                    set PATH=%MBT_PATH%;%PATH%
-                    where mbt
-                    mbt build -p=cf
-                '''
+                bat 'mbt build -p=cf'
+            }
+        }
+
+        stage('Install MultiApps Plugin') {
+            steps {
+                bat 'cf install-plugin -f -r CF-Community "multiapps"'
             }
         }
 
         stage('CF Login') {
             steps {
-                bat '''
-                    set PATH=%CF_PATH%;%PATH%
-                    where cf
+                bat """
                     cf logout
                     cf login -a %CF_API% -u %CF_USER% -p %CF_PASSWORD% -o %CF_ORG% -s %CF_SPACE%
-                '''
+                """
             }
         }
 
         stage('CF Deploy') {
             steps {
-                bat '''
-                    set PATH=%CF_PATH%;%PATH%
-                    cf deploy mta_archives\\*.mtar -f
-                '''
+                bat 'cf deploy mta_archives\\*.mtar -f'
             }
         }
     }
@@ -55,9 +52,11 @@ pipeline {
         always {
             cleanWs()
         }
+
         failure {
             echo '❌ Pipeline failed. Check the logs for errors.'
         }
+
         success {
             echo '✅ Application deployed to Cloud Foundry successfully!'
         }

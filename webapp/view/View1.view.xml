@@ -1,6 +1,115 @@
-<mvc:View controllerName="sap.btp.sapui5.controller.View1"
+<mvc:View
+    controllerName="sap.btp.sapui5.controller.View1"
     xmlns:mvc="sap.ui.core.mvc"
-    xmlns="sap.m">
-    <Page id="page" title="{i18n>title}">
+    xmlns="sap.m"
+>
+    <Page
+        id="page"
+        title="{i18n>title}"
+    >
+        <content>
+            <VBox
+                id="mainVBox"
+                class="sapUiMediumMargin"
+            >
+                <Title
+                    id="formTitle"
+                    text="{i18n>formTitle}"
+                    level="H2"
+                    class="sapUiMediumMarginBottom"
+                />
+
+                <!-- Input Fields -->
+                <VBox
+                    id="firstNameVBox"
+                    class="sapUiMediumMarginBottom"
+                >
+                    <Label
+                        id="firstNameLabel"
+                        text="{i18n>firstNameLabel}"
+                        class="sapUiTinyMarginBottom"
+                    />
+                    <Input
+                        id="firstNameInput"
+                        value="{/firstName}"
+                        placeholder="{i18n>firstNamePlaceholder}"
+                        width="300px"
+                    />
+                </VBox>
+
+                <VBox
+                    id="lastNameVBox"
+                    class="sapUiMediumMarginBottom"
+                >
+                    <Label
+                        id="lastNameLabel"
+                        text="{i18n>lastNameLabel}"
+                        class="sapUiTinyMarginBottom"
+                    />
+                    <Input
+                        id="lastNameInput"
+                        value="{/lastName}"
+                        placeholder="{i18n>lastNamePlaceholder}"
+                        width="300px"
+                    />
+                </VBox>
+
+                <VBox
+                    id="emailVBox"
+                    class="sapUiMediumMarginBottom"
+                >
+                    <Label
+                        id="emailLabel"
+                        text="{i18n>emailLabel}"
+                        class="sapUiTinyMarginBottom"
+                    />
+                    <Input
+                        id="emailInput"
+                        value="{/email}"
+                        placeholder="{i18n>emailPlaceholder}"
+                        type="Email"
+                        width="300px"
+                    />
+                </VBox>
+
+                <VBox
+                    id="phoneVBox"
+                    class="sapUiMediumMarginBottom"
+                >
+                    <Label
+                        id="phoneLabel"
+                        text="{i18n>phoneLabel}"
+                        class="sapUiTinyMarginBottom"
+                    />
+                    <Input
+                        id="phoneInput"
+                        value="{/phone}"
+                        placeholder="{i18n>phonePlaceholder}"
+                        type="Tel"
+                        width="300px"
+                    />
+                </VBox>
+
+                <!-- Buttons -->
+                <HBox
+                    id="buttonHBox"
+                    class="sapUiMediumMarginTop"
+                >
+                    <Button
+                        id="submitButton"
+                        text="{i18n>submitButton}"
+                        type="Emphasized"
+                        press="onSubmitPress"
+                        class="sapUiTinyMarginEnd"
+                    />
+                    <Button
+                        id="clearButton"
+                        text="{i18n>clearButton}"
+                        type="Default"
+                        press="onClearPress"
+                    />
+                </HBox>
+            </VBox>
+        </content>
     </Page>
 </mvc:View>

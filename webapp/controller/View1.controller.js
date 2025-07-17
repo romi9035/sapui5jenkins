@@ -85,7 +85,7 @@ sap.ui.define(
                 email: "",
                 phone: "",
               });
-              
+
               MessageToast.show(oResourceBundle.getText("successClearToast"));
             }
           },

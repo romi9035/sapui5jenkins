@@ -14,6 +14,24 @@
       "id": "@sap/generator-fiori:basic",
       "version": "1.18.1",
       "toolsId": "b2e5cc86-6719-4eff-9aab-c4b2d5276d0d"
+    },
+      "crossNavigation": {
+      "inbounds": {
+        "intent1": {
+          "semanticObject": "sapbtpsapui5",
+          "action": "display",
+          "title": "{{appTitle}}",
+          "info": "{{appDescription}}",
+          "signature": {
+            "parameters": {}
+          },
+          "resolutionResult": {
+            "applicationType": "SAPUI5",
+            "additionalInformation": "SAPUI5.Component=sap.btp.sapui5",
+            "url": "/sap/bc/ui5_ui5/sap/sapbtpsapui5"
+          }
+        }
+      }
     }
   },
   "sap.ui": {

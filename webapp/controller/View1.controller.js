@@ -175,6 +175,15 @@ sap.ui.define(
         oModel.setData(this._getInitialModelData());
         MessageToast.show(oResourceBundle.getText("successClearToast"));
       },
+
+      /**
+       * Handles navigation to dummy view.
+       * @public
+       */
+      onGoToDummyView() {
+        const oRouter = this.getOwnerComponent().getRouter();
+        oRouter.navTo("RouteDummyView");
+      }
     });
   }
 );

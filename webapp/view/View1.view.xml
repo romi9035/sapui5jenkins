@@ -107,6 +107,13 @@
                         text="{i18n>clearButton}"
                         type="Default"
                         press="onClearPress"
+                        class="sapUiTinyMarginEnd"
+                    />
+                    <Button
+                        id="dummyViewButton"
+                        text="Go to Dummy View"
+                        type="Default"
+                        press="onGoToDummyView"
                     />
                 </HBox>
             </VBox>

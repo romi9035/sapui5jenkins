@@ -1,0 +1,75 @@
+<mvc:View
+    controllerName="sap.btp.sapui5.controller.DummyView"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+>
+    <Page
+        id="dummyPage"
+        title="Dummy View"
+        showNavButton="true"
+        navButtonPress="onNavBack"
+    >
+        <content>
+            <VBox
+                id="dummyVBox"
+                class="sapUiMediumMargin"
+            >
+                <Title
+                    id="dummyTitle"
+                    text="This is a Dummy View"
+                    level="H2"
+                    class="sapUiMediumMarginBottom"
+                />
+
+                <Text
+                    id="dummyText"
+                    text="This is a placeholder view created for demonstration purposes. It contains basic UI5 controls and functionality."
+                    class="sapUiMediumMarginBottom"
+                />
+
+                <Panel
+                    id="dummyPanel"
+                    headerText="Dummy Content"
+                    class="sapUiResponsiveMargin"
+                    width="auto"
+                >
+                    <content>
+                        <VBox class="sapUiMediumMargin">
+                            <Label
+                                id="dummyLabel"
+                                text="Sample Input:"
+                                class="sapUiTinyMarginBottom"
+                            />
+                            <Input
+                                id="dummyInput"
+                                value="{/dummyText}"
+                                placeholder="Enter some dummy text..."
+                                width="300px"
+                                class="sapUiMediumMarginBottom"
+                            />
+                            <Button
+                                id="dummyButton"
+                                text="Show Message"
+                                type="Emphasized"
+                                press="onShowMessage"
+                                class="sapUiTinyMarginEnd"
+                            />
+                        </VBox>
+                    </content>
+                </Panel>
+
+                <HBox
+                    id="navigationHBox"
+                    class="sapUiMediumMarginTop"
+                >
+                    <Button
+                        id="backToView1Button"
+                        text="Go to View1"
+                        type="Default"
+                        press="onGoToView1"
+                    />
+                </HBox>
+            </VBox>
+        </content>
+    </Page>
+</mvc:View>

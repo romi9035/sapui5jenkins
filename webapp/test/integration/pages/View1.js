@@ -7,7 +7,18 @@ sap.ui.define([
 	Opa5.createPageObjects({
 		onTheViewPage: {
 
-			actions: {},
+			actions: {
+				iPressTheGoToDummyViewButton: function () {
+					return this.waitFor({
+						id: "dummyViewButton",
+						viewName: sViewName,
+						success: function (oButton) {
+							oButton.$().trigger("tap");
+						},
+						errorMessage: "Did not find the Go to Dummy View button on the " + sViewName + " view"
+					});
+				}
+			},
 
 			assertions: {
 

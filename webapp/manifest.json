@@ -97,12 +97,23 @@
           "target": [
             "TargetView1"
           ]
+        },
+        {
+          "name": "RouteDummyView",
+          "pattern": "dummy",
+          "target": [
+            "TargetDummyView"
+          ]
         }
       ],
       "targets": {
         "TargetView1": {
           "id": "View1",
           "name": "View1"
+        },
+        "TargetDummyView": {
+          "id": "DummyView",
+          "name": "DummyView"
         }
       }
     },

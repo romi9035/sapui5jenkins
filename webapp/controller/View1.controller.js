@@ -8,15 +8,28 @@ sap.ui.define(
   (Controller, MessageToast, MessageBox, JSONModel) => {
     "use strict";
 
+    // Form field configuration
+    const INITIAL_FORM_DATA = {
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: "",
+    };
+
+    // Email validation regex
+    const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
     return Controller.extend("sap.btp.sapui5.controller.View1", {
       onInit() {
-        // Initialize the data model
-        const oModel = new JSONModel({
-          firstName: "",
-          lastName: "",
-          email: "",
-          phone: "",
-        });
+        this._initializeModel();
+      },
+
+      /**
+       * Initialize the data model with default values
+       * @private
+       */
+      _initializeModel() {
+        const oModel = new JSONModel(INITIAL_FORM_DATA);
         this.getView().setModel(oModel);
       },
 
@@ -29,28 +42,48 @@ sap.ui.define(
         return this.getOwnerComponent().getModel("i18n").getResourceBundle();
       },
 
+      /**
+       * Validates form data
+       * @param {Object} oData - Form data to validate
+       * @returns {Object} Validation result with isValid flag and error message
+       * @private
+       */
+      _validateFormData(oData) {
+        const oResourceBundle = this.getResourceBundle();
+
+        // Check required fields
+        if (!oData.firstName || !oData.lastName || !oData.email) {
+          return {
+            isValid: false,
+            message: oResourceBundle.getText("errorRequiredFields")
+          };
+        }
+
+        // Validate email format
+        if (!EMAIL_REGEX.test(oData.email)) {
+          return {
+            isValid: false,
+            message: oResourceBundle.getText("errorInvalidEmail")
+          };
+        }
+
+        return { isValid: true };
+      },
+
       onSubmitPress() {
-        // Get the model data
         const oModel = this.getView().getModel();
         const oData = oModel.getData();
         const oResourceBundle = this.getResourceBundle();
 
-        // Validate required fields
-        if (!oData.firstName || !oData.lastName || !oData.email) {
-          MessageBox.error(oResourceBundle.getText("errorRequiredFields"));
-          return;
-        }
-
-        // Validate email format
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(oData.email)) {
-          MessageBox.error(oResourceBundle.getText("errorInvalidEmail"));
+        // Validate form data
+        const validationResult = this._validateFormData(oData);
+        if (!validationResult.isValid) {
+          MessageBox.error(validationResult.message);
           return;
         }
 
         // Create success message with parameters
-        const sPhoneText =
-          oData.phone || oResourceBundle.getText("phoneNotProvided");
+        const sPhoneText = oData.phone || oResourceBundle.getText("phoneNotProvided");
         const sMessage = oResourceBundle.getText("successSubmissionMessage", [
           oData.firstName,
           oData.lastName,
@@ -62,9 +95,7 @@ sap.ui.define(
         MessageBox.success(sMessage, {
           title: oResourceBundle.getText("successSubmissionTitle"),
           onClose: () => {
-            MessageToast.show(
-              oResourceBundle.getText("successSubmissionToast")
-            );
+            MessageToast.show(oResourceBundle.getText("successSubmissionToast"));
           },
         });
       },
@@ -77,19 +108,20 @@ sap.ui.define(
           title: oResourceBundle.getText("confirmClearFormTitle"),
           onClose: (sAction) => {
             if (sAction === MessageBox.Action.OK) {
-              // Clear the model data
-              const oModel = this.getView().getModel();
-              oModel.setData({
-                firstName: "",
-                lastName: "",
-                email: "",
-                phone: "",
-              });
-
+              this._clearFormData();
               MessageToast.show(oResourceBundle.getText("successClearToast"));
             }
           },
         });
+      },
+
+      /**
+       * Clears the form data by resetting to initial values
+       * @private
+       */
+      _clearFormData() {
+        const oModel = this.getView().getModel();
+        oModel.setData({ ...INITIAL_FORM_DATA });
       },
     });
   }
